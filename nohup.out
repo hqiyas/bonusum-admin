@@ -1,0 +1,53 @@
+
+> bonusum-admin@0.1.0 dev
+> next dev --port 3001
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://127.94.0.1:3001
+- Environments: .env.local
+✓ Ready in 299ms
+
+ GET /licenses 200 in 379ms (next.js: 197ms, application-code: 182ms)
+ GET /licenses 200 in 63ms (next.js: 4ms, application-code: 59ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/licenses" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="az">
+                          <body
+-                           data-testim-main-word-scripts-loaded="true"
+                          >
+                  ...
+ 
+[browser] ⨯ unhandledRejection: AxiosError: Request failed with status code 500
+ GET /dashboard 200 in 96ms (next.js: 57ms, application-code: 38ms)
+ GET /companies 200 in 59ms (next.js: 30ms, application-code: 29ms)
+[browser] ⨯ unhandledRejection: AxiosError: Request failed with status code 500
+[browser] ⨯ unhandledRejection: AxiosError: Request failed with status code 500
+[?25h

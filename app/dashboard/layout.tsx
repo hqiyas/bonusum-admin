@@ -8,6 +8,7 @@ const NAV = [
   { href: '/companies',  label: 'Şirkətlər',  icon: '🏢' },
   { href: '/licenses',   label: 'Lisenziyalar', icon: '🔑' },
   { href: '/vendors',    label: 'Vendorlar',   icon: '🏪' },
+  { href: '/discounts', label: 'Endirimlər', icon: '🏷️' },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
