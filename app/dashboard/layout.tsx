@@ -4,11 +4,11 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 const NAV = [
-  { href: '/dashboard',  label: 'Dashboard',  icon: '📊' },
-  { href: '/companies',  label: 'Şirkətlər',  icon: '🏢' },
-  { href: '/licenses',   label: 'Lisenziyalar', icon: '🔑' },
-  { href: '/vendors',    label: 'Vendorlar',   icon: '🏪' },
-  { href: '/discounts', label: 'Endirimlər', icon: '🏷️' },
+  { href: '/dashboard',           label: 'Dashboard',  icon: '📊' },
+  { href: '/dashboard/companies', label: 'Şirkətlər',  icon: '🏢' },
+  { href: '/dashboard/licenses',  label: 'Lisenziyalar', icon: '🔑' },
+  { href: '/dashboard/vendors',   label: 'Vendorlar',   icon: '🏪' },
+  { href: '/dashboard/discounts', label: 'Endirimlər',  icon: '🏷️' },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
