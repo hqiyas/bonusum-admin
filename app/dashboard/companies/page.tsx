@@ -3,7 +3,13 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { Plus, X, Building2, Mail, Phone, Edit2 } from 'lucide-react';
 
-const EMPTY = { name:'', email:'', phone:'', address:'', contact_name:'', notes:'' };
+const EMPTY = { name:'', email:'', phone:'', address:'', contact_name:'', notes:'', plan_id:'' };
+
+const PLAN_STYLES: Record<string, { bg: string; text: string }> = {
+  starter: { bg: 'bg-gray-100', text: 'text-gray-600' },
+  professional: { bg: 'bg-blue-50', text: 'text-blue-600' },
+  advanced: { bg: 'bg-purple-50', text: 'text-purple-600' },
+};
 
 export default function Companies() {
   const [companies, setCompanies] = useState<any[]>([]);
@@ -12,6 +18,7 @@ export default function Companies() {
   const [editing,   setEditing]   = useState<any>(null);
   const [form,      setForm]      = useState(EMPTY);
   const [saving,    setSaving]    = useState(false);
+  const [plans,     setPlans]     = useState<any[]>([]);
   const [error,     setError]     = useState('');
 
   const load = () => {
@@ -21,13 +28,16 @@ export default function Companies() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    api.get('/plans').then(r => setPlans(r.data.plans || [])).catch(() => {});
+  }, []);
 
   const openAdd = () => { setEditing(null); setForm(EMPTY); setError(''); setShowModal(true); };
   const openEdit = (c: any) => {
     setEditing(c);
     setForm({ name: c.name, email: c.email||'', phone: c.phone||'',
-              address: c.address||'', contact_name: c.contact_name||'', notes: c.notes||'' });
+              address: c.address||'', contact_name: c.contact_name||'', notes: c.notes||'', plan_id: c.plan_id||'' });
     setError(''); setShowModal(true);
   };
 
@@ -86,6 +96,11 @@ export default function Companies() {
                         ${c.status==='active' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
                         {c.status==='active' ? 'Aktiv' : 'Deaktiv'}
                       </span>
+                      {c.plan_name && (
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${(PLAN_STYLES[c.plan_name] || PLAN_STYLES.starter).bg} ${(PLAN_STYLES[c.plan_name] || PLAN_STYLES.starter).text}`}>
+                          {c.plan_display_name || c.plan_name}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-4 text-xs text-gray-400 flex-wrap ml-13">
@@ -162,6 +177,22 @@ export default function Companies() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Qeyd</label>
                 <textarea className="input-field h-20 resize-none"
                   value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Plan</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {plans.map((p: any) => (
+                    <button key={p.id} type="button" onClick={() => setForm({...form, plan_id: p.id})}
+                      className={`p-3 rounded-xl border-2 text-center transition-all ${
+                        form.plan_id === p.id
+                          ? 'border-[#1a1a2e] bg-[#1a1a2e]/5'
+                          : 'border-gray-200 hover:border-gray-300'}`}>
+                      <p className="font-semibold text-sm text-gray-900">{p.display_name}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">${p.price_per_user}/istifadəçi</p>
+                      <p className="text-xs text-gray-300 mt-0.5">{p.modules?.length} modul</p>
+                    </button>
+                  ))}
+                </div>
               </div>
               <div className="flex gap-3 justify-end pt-2">
                 <button type="button" onClick={() => setShowModal(false)} className="btn-secondary text-sm">Ləğv et</button>
